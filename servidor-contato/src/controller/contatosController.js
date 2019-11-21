@@ -1,9 +1,9 @@
-const contatosColletction = require("../model/contatoSchema")
+const contatosCollection = require("../model/contatoSchema")
 
 const getAll = (request, response) => {
   
  // response.status(200).send(contatosCollection.agenda)
- contatosColletction.find((error, contatos) => {
+ contatosCollection.find((error, contatos) => {
   if(error){
     return response.status(500).send(error)
   }else{
@@ -17,7 +17,7 @@ const getByName = (request, response) => {
   const regex = new RegExp(nomeParam)
  // const filtro = {nome: nomeParam}
   const filtro = {nome: regex}
-  contatosColletction.find(filtro, (error, contatos) =>{
+  contatosCollection.find(filtro, (error, contatos) =>{
     if(error){
       return response.status(404).send(error)
     }else{
@@ -28,7 +28,7 @@ const getByName = (request, response) => {
 
 const getById = (request, response) =>{
   const idParam = request.params.id
-    contatosColletction.findById(idParam,(error, contato) => {
+    contatosCollection.findById(idParam,(error, contato) => {
       if(error){
         return response.status(500).send(error)
       }else{
@@ -42,7 +42,7 @@ const getById = (request, response) =>{
 }
 const add = (request, response) => {
   const contatoDoBody = request.body
-  const contato = new contatosColletction(contatoDoBody)
+  const contato = new contatosCollection(contatoDoBody)
 
   contato.save((error) => {
     //if(error !=null && error != undefined)
@@ -55,9 +55,27 @@ const add = (request, response) => {
   })
 }
 
-const deleteById = (request, response) =>{
+const updateById = (request, response) => {
+  const updateParam = request.params.id
+  const updateBody = request.body
+
+  // console.log(updateParam)
+  contatosCollection.findByIdAndUpdate(updateParam, updateBody, (error, contato) => {
+    if(error){
+      return response.status(500).send(error)
+    }else{
+      if(contato){
+        return response.status(200).send(contato)
+      }else{
+        return response.SendStatus(404)
+      }
+    }
+  })
+}
+
+const deleteById = (request, response) => {
   const deletParam = request.params.id
-  contatosColletction.findByIdAndDelete(deletParam, (error, contato) =>{
+  contatosCollection.findByIdAndDelete(deletParam, (error, contato) =>{
   if(error){
     return response.status(500).send(error)
   }else{
@@ -75,5 +93,6 @@ module.exports = {
  getByName,
  getById,
   add,
-  deleteById
+  deleteById,
+  updateById
 }

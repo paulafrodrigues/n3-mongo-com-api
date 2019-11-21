@@ -7,7 +7,7 @@ router.get("/", controller.getAll)
 router.get("/nome/:nome", controller.getByName)
 router.get("/id/:id", controller.getById)
 router.post("/criar", bodyParser.json(), controller.add)
-router.patch("atualizar/:id")
+router.patch("/atualizar/:id", bodyParser.json(), controller.updateById)
 router.delete("/delete/:id", controller.deleteById)
 
 module.exports = router;
