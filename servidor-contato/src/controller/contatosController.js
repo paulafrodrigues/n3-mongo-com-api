@@ -1,8 +1,6 @@
 const contatosCollection = require("../model/contatoSchema")
 
 const getAll = (request, response) => {
-  
- // response.status(200).send(contatosCollection.agenda)
  contatosCollection.find((error, contatos) => {
   if(error){
     return response.status(500).send(error)
@@ -58,11 +56,11 @@ const add = (request, response) => {
 const updateById = (request, response) => {
   const updateParam = request.params.id
   const updateBody = request.body
-
+  const options = {new: true}
   // console.log(updateParam)
-  contatosCollection.findByIdAndUpdate(updateParam, updateBody, (error, contato) => {
+  contatosCollection.findByIdAndUpdate(updateParam, updateBody, options, (error, contato) => {
     if(error){
-      return response.status(500).send(error)
+      return response.status(304).send(error)
     }else{
       if(contato){
         return response.status(200).send(contato)
